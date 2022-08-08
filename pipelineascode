@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    environment {
+        name = "karan"
+    }
+    parameters {
+        string(name: "karan", defaultValue: "Nobody", description: "test")
+        booleanParam(name: "isMale", defaultValue: true, description: "")
+        choice(name: "which city", choices: ['Mum','Pun','Blr'], description: "")
+    }
+
+    stages {
+        stage('Run command') {
+            steps {
+                sh '''
+                ls
+                date
+                whoami
+                pwd
+            
+                '''
+            }
+        }
+        stage('Env var') {
+            environment {
+                username = "test"
+            }
+            steps {
+               sh 'echo "${BUILD_ID}"'
+               sh 'echo "${name}"'
+               sh 'echo "${karan}"'
+            }
+        }
+        stage('test') {
+            input {
+                message "should we contin"
+                ok " yes "
+            }
+            steps {
+                echo 'deploy to test'
+                sh 'echo "${username}"'
+            }
+        }
+        stage('prod') {
+            steps {
+                echo 'deploy to prod'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo " I am back "
+        }
+        failure {
+            echo " failure"
+        }    
+        success {
+            echo " success"
+        }
+        
+    }
+}
