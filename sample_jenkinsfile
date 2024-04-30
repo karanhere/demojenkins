@@ -10,11 +10,11 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Clone the Git repository's master branch
+                    // Clone the Git repository's main branch
                     def gitRepoUrl = 'https://github.com/karanhere/demojenkins.git'
 
                     checkout([$class: 'GitSCM', 
-                        branches: [[name: '*/master']], 
+                        branches: [[name: '*/main']], 
                         userRemoteConfigs: [[url: gitRepoUrl]], 
                         extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, batallow: true, depth: 1]]
                     ])
